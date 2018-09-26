@@ -267,8 +267,10 @@ int32_t hf_spawn(void (*task)(), uint16_t period, uint16_t capacity, uint16_t de
 	if (krnl_task->pstack){
 		krnl_task->pstack[0] = STACK_MAGIC;
 		kprintf("\nKERNEL: [%s], id: %d, p:%d, c:%d, d:%d, addr: %x, sp: %x, ss: %d bytes", krnl_task->name, krnl_task->id, krnl_task->period, krnl_task->capacity, krnl_task->deadline, krnl_task->ptask, _get_task_sp(krnl_task->id), stack_size);
-		if (period){
+		if (period > 0 && capacity > 0 && deadline > 0){
 			if (hf_queue_addtail(krnl_rt_queue, krnl_task)) panic(PANIC_CANT_PLACE_RT);
+		}else if (period == 0 && capacity > 0 && deadline == 0){
+			if (hf_queue_addtail(krnl_ap_queue, krnl_task)) panic(PANIC_CANT_PLACE_AP);
 		}else{
 			if (hf_queue_addtail(krnl_run_queue, krnl_task)) panic(PANIC_CANT_PLACE_RUN);
 		}
@@ -452,7 +454,7 @@ int32_t hf_kill(uint16_t id)
 	krnl_task->state = TASK_IDLE;
 	krnl_tasks--;
 
-	if (krnl_task->period){
+	if (krnl_task->period > 0 && krnl_task->capacity > 0 && krnl_task->deadline > 0){
 		k = hf_queue_count(krnl_rt_queue);
 		for (i = 0; i < k; i++)
 			if (hf_queue_get(krnl_rt_queue, i) == krnl_task) break;
@@ -460,7 +462,15 @@ int32_t hf_kill(uint16_t id)
 		for (j = i; j > 0; j--)
 			if (hf_queue_swap(krnl_rt_queue, j, j-1)) panic(PANIC_CANT_SWAP);
 		krnl_task2 = hf_queue_remhead(krnl_rt_queue);
-	}else{
+	} else if (krnl_task->period == 0 && krnl_task->capacity > 0 && krnl_task->deadline == 0) {
+		k = hf_queue_count(krnl_ap_queue);
+		for (i = 0; i < k; i++)
+			if (hf_queue_get(krnl_ap_queue, i) == krnl_task) break;
+		if (!k || i == k) panic(PANIC_NO_TASKS_AP);
+		for (j = i; j > 0; j--)
+			if (hf_queue_swap(krnl_ap_queue, j, j-1)) panic(PANIC_CANT_SWAP);
+		krnl_task2 = hf_queue_remhead(krnl_ap_queue);
+	} else{
 		k = hf_queue_count(krnl_run_queue);
 		for (i = 0; i < k; i++)
 			if (hf_queue_get(krnl_run_queue, i) == krnl_task) break;
