@@ -20,6 +20,7 @@
 #include <queue.h>
 #include <kernel.h>
 #include <panic.h>
+#include <task.h>
 #include <scheduler.h>
 
 static void process_delay_queue(void)
@@ -300,14 +301,15 @@ int32_t sched_aperiodic(void)
 	int32_t k;
 	uint16_t id = 0;
 	
-	k = hf_queue_count(krnl_ap_queue);
-	if (k == 0)
-		return 0;
-
-	do {
+	while(hf_queue_count(krnl_ap_queue) > 0) {
 		ap_queue_next();
-	} while (krnl_task->state == TASK_BLOCKED);
-	krnl_task->apjobs++;
-
-	return krnl_task->id;
+		if (krnl_task->capacity_rem > 0) {
+			krnl_task->capacity_rem--;
+			krnl_task->apjobs++;
+			return krnl_task->id;
+		} else {
+			hf_kill(krnl_task->id);
+		}
+	}
+	return 0;
 }
