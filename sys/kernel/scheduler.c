@@ -65,7 +65,7 @@ static void ap_queue_next()
 {
 	krnl_task = hf_queue_remhead(krnl_ap_queue);
 	if (!krnl_task)
-		panic(PANIC_NO_TASKS_RT);
+		panic(PANIC_NO_TASKS_AP);
 	if (hf_queue_addtail(krnl_ap_queue, krnl_task))
 		panic(PANIC_CANT_PLACE_AP);
 }
