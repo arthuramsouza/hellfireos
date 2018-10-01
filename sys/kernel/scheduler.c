@@ -141,6 +141,8 @@ void dispatch_isr(void *arg)
  */
 int32_t sched_rr(void)
 {
+	printf("ENTROU NO SCHEDULER sched_rr!!!\n");
+
 	if (hf_queue_count(krnl_run_queue) == 0)
 		panic(PANIC_NO_TASKS_RUN);
 	do {
@@ -163,6 +165,8 @@ int32_t sched_rr(void)
  */
 int32_t sched_lottery(void)
 {
+	printf("ENTROU NO SCHEDULER sched_lottery!!!\n");
+
 	int32_t r, i = 0;
 	
 	r = random() % krnl_tasks;
@@ -191,6 +195,8 @@ int32_t sched_lottery(void)
  */
 int32_t sched_priorityrr(void)
 {
+	printf("ENTROU NO sched_priorityrr!!!\n");
+
 	int32_t i, k;
 	uint8_t highestp = 255;
 	struct tcb_entry *krnl_task2 = NULL;
@@ -247,6 +253,8 @@ done:
 
 int32_t sched_rma(void)
 {
+	printf("ENTROU NO SCHEDULER sched_rma!!!\n");
+
 	int32_t i, j, k;
 	uint16_t id = 0;
 	struct tcb_entry *e1, *e2;
@@ -298,6 +306,8 @@ int32_t sched_rma(void)
 
 int32_t sched_aperiodic(void)
 {
+	printf("ENTROU NO SCHEDULER sched_aperiodic!!!\n");
+
 	int32_t k;
 	uint16_t id = 0;
 	
