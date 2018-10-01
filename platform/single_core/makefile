@@ -1,5 +1,5 @@
-APP = app/sched_test2
-ARCH = riscv/hf-riscv
+APP = app/TESTANDO
+ARCH = mips/hf-risc
 
 SERIAL_BAUD=57600
 SERIAL_DEVICE=/dev/ttyUSB0
