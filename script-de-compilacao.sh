@@ -29,10 +29,11 @@ echo " "
 #compilando a aplicacao
 echo "#compilando a aplicacao"
 cd platform/single_core
+make clean
 make image
 echo " "
 
 #executando a aplicacao
-#echo "#executando a aplicacao"
-#../../usr/sim/hf_risc_sim/hf_risc_sim image.bin log.txt
-#echo " "
+echo "#executando a aplicacao"
+../../usr/sim/hf_risc_sim/hf_risc_sim image.bin log.txt
+echo " "
