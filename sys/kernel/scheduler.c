@@ -78,7 +78,6 @@ static void ap_queue_next()
  * tasks to be scheduled, process the delay queue and invoke the real-time scheduler callback.
  * If no RT tasks are ready to be scheduled, invoke the best effort scheduler callback.
  * Update the scheduled task state to running and restore the context of the task.
- * sched_rma
  * Delayed tasks are in the delay queue, and are processed in the following way:
  *	- The number of elements (tasks) in queue is counted;
  *	- The a task from the head of the queue is removed and its delay is decremented;
@@ -114,7 +113,7 @@ void dispatch_isr(void *arg)
 			}
 		}
 		krnl_task->state = TASK_RUNNING;
-		krnl_pcb.preempt_cswitch++;sched_rma
+		krnl_pcb.preempt_cswitch++;
 #if KERNEL_LOG >= 1
 		dprintf("\n%d %d %d %d %d ", krnl_current_task, krnl_task->period, krnl_task->capacity, krnl_task->deadline, (uint32_t)_read_us());
 #endif
@@ -146,7 +145,7 @@ int32_t sched_rr(void)
 	do {
 		run_queue_next();
 	} while (krnl_task->state == TASK_BLOCKED);
-	krnl_task->bgjobs++;sched_rma
+	krnl_task->bgjobs++;
 
 	return krnl_task->id;
 }
@@ -163,7 +162,7 @@ int32_t sched_rr(void)
  */
 int32_t sched_lottery(void)
 {
-	int32_t r, i = 0;sched_rma
+	int32_t r, i = 0;
 	
 	r = random() % krnl_tasks;
 	if (hf_queue_count(krnl_run_queue) == 0)
@@ -191,7 +190,7 @@ int32_t sched_lottery(void)
  */
 int32_t sched_priorityrr(void)
 {
-	int32_t i, k;sched_rma
+	int32_t i, k;
 	uint8_t highestp = 255;
 	struct tcb_entry *krnl_task2 = NULL;
 	
