@@ -297,8 +297,26 @@ int32_t sched_rma(void)
 
 int32_t sched_aperiodic(void)
 {
-	int32_t k;
+	int32_t i, j, k;
+	uint16_t id = 0;
+	struct tcb_entry *task;
 	
 	k = hf_queue_count(krnl_ap_queue);
+	if (k == 0)
+		return 0;
+
+	for (i = 0; i < k-1; i++){
+		task = hf_queue_get(krnl_ap_queue, i);
+
+	}
+
+	if (id){
+		krnl_task = &krnl_tcb[id];
+		krnl_task->apjobs++;
+		return id;
+	}
+
+	return 0;
+
 	// TODO
 }
