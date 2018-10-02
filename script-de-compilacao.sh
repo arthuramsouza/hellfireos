@@ -1,5 +1,7 @@
 #!/bin/bash
 
+#altere as propriedades deste script para que ele possa ser executado como um programa
+
 #baixe o gcc 4.6.1 na pasta downloads
 
 #descompactando o gcc 4.6.1
