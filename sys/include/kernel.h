@@ -60,6 +60,16 @@ struct pcb_entry {
 	/* much more stuff should be here! */
 };
 
+typedef struct{
+	int id;
+	uint32_t arrival_time;
+	uint32_t release_time;
+	uint32_t delay_time;	
+}task_time;
+task_time task_time_array[MAX_TASKS];
+int task_time_array_count;
+
+
 /**
  * @brief The task control block and processor control block
  */
