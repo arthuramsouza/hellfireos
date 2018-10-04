@@ -25,6 +25,39 @@
 #include <task.h>
 #include <ecodes.h>
 
+int add_task_time(int id)
+{
+	if(task_time_array_count < MAX_TASKS)
+	{
+		task_time aux;
+		aux.id = id;		
+		task_time_array[task_time_array_count] = aux;
+		task_time_array_count++;
+
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}	
+}
+
+task_time get_task_time(int id_aux)
+{
+	int i;
+	for(i=0; i<task_time_array_count; i++)
+	{
+		if(task_time_array[i].id == id_aux)
+		{
+			return task_time_array[i];
+		}
+	}
+
+	task_time aux;
+	aux.id = -1;
+	return aux;
+}
+
 /**
  * @brief Get a task id by its name.
  * 
@@ -282,6 +315,18 @@ int32_t hf_spawn(void (*task)(), uint16_t period, uint16_t capacity, uint16_t de
 	}
 	krnl_task = &krnl_tcb[krnl_current_task];
 	_ei(status);
+
+	if(add_task_time(i) == 1)
+	{
+		task_time aux = get_task_time(i);
+
+		if(aux.id != -1)
+		{
+			aux.arrival_time = _readcounter();
+		}
+
+		kprintf("\n\n\n TAREFA.ARRIVAL_TIME => %d ----\n\n\n", aux.arrival_time);
+	}	
 	
 	return i;
 }
