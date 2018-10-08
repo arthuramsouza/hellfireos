@@ -42,6 +42,7 @@ int add_task_time(int id)
 	}	
 }
 
+/*
 task_time get_task_time(int id_aux)
 {
 	int i;
@@ -56,6 +57,23 @@ task_time get_task_time(int id_aux)
 	task_time aux;
 	aux.id = -1;
 	return aux;
+}
+*/
+int get_task_time(int id_aux)
+{
+	int i;
+	for(i=0; i<task_time_array_count; i++)
+	{
+		if(task_time_array[i].id == id_aux)
+		{
+			//return task_time_array[i];
+			return i;
+		}
+	}
+
+	//task_time aux;
+	//aux.id = -1;
+	return -1;
 }
 
 /**
@@ -318,14 +336,14 @@ int32_t hf_spawn(void (*task)(), uint16_t period, uint16_t capacity, uint16_t de
 
 	if(add_task_time(i) == 1)
 	{
-		task_time aux = get_task_time(i);
+		int aux_id = get_task_time(i);
 
-		if(aux.id != -1)
+		if(task_time_array[aux_id].id != -1)
 		{
-			aux.arrival_time = _readcounter();
+			task_time_array[aux_id].arrival_time = _readcounter();
 		}
 
-		kprintf("\n\n\n TAREFA.ARRIVAL_TIME => %d ----\n\n\n", aux.arrival_time);
+		//kprintf("\n\n\n TAREFA.ARRIVAL_TIME = %d ---- TAREFA.RELEASE_TIME = %d \n\n\n", aux.arrival_time, aux.release_time);
 	}	
 	
 	return i;
