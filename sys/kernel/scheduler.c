@@ -141,7 +141,7 @@ void dispatch_isr(void *arg)
  */
 int32_t sched_rr(void)
 {
-	printf("ENTROU NO SCHEDULER sched_rr!!!\n");
+	//printf("ENTROU NO SCHEDULER sched_rr!!!\n");
 
 	if (hf_queue_count(krnl_run_queue) == 0)
 		panic(PANIC_NO_TASKS_RUN);
@@ -165,7 +165,7 @@ int32_t sched_rr(void)
  */
 int32_t sched_lottery(void)
 {
-	printf("ENTROU NO SCHEDULER sched_lottery!!!\n");
+	//printf("ENTROU NO SCHEDULER sched_lottery!!!\n");
 
 	int32_t r, i = 0;
 	
@@ -195,7 +195,7 @@ int32_t sched_lottery(void)
  */
 int32_t sched_priorityrr(void)
 {
-	printf("ENTROU NO sched_priorityrr!!!\n");
+	//printf("ENTROU NO sched_priorityrr!!!\n");
 
 	int32_t i, k;
 	uint8_t highestp = 255;
@@ -253,7 +253,7 @@ done:
 
 int32_t sched_rma(void)
 {
-	printf("ENTROU NO SCHEDULER sched_rma!!!\n");
+	//printf("ENTROU NO SCHEDULER sched_rma!!!\n");
 
 	int32_t i, j, k;
 	uint16_t id = 0;
@@ -306,16 +306,23 @@ int32_t sched_rma(void)
 
 int32_t sched_aperiodic(void)
 {
-	printf("ENTROU NO SCHEDULER sched_aperiodic!!!\n");
+	//printf("ENTROU NO SCHEDULER sched_aperiodic!!!\n");
 
 	int32_t k;
 	uint16_t id = 0;
+	int aux_id;
 	
 	while(hf_queue_count(krnl_ap_queue) > 0) {
 		ap_queue_next();
 		if (krnl_task->capacity_rem > 0) {
 			krnl_task->capacity_rem--;
 			krnl_task->apjobs++;
+
+			aux_id = get_task_time(krnl_task->id);
+			task_time_array[aux_id].release_time = _readcounter();
+			task_time_array[aux_id].delay_time = task_time_array[aux_id].release_time - task_time_array[aux_id].arrival_time;
+			kprintf("\n\n\n TAREFA.ID=%d ---- TAREFA.ARRIVAL_TIME=%d ---- TAREFA.RELEASE_TIME=%d ---- TAREFA.DELAY_TIME=%d \n\n\n", task_time_array[aux_id].id, task_time_array[aux_id].arrival_time, task_time_array[aux_id].release_time, task_time_array[aux_id].delay_time);
+
 			return krnl_task->id;
 		} else {
 			hf_kill(krnl_task->id);
