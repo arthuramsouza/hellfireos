@@ -13,3 +13,5 @@ int32_t hf_block(uint16_t id);
 int32_t hf_resume(uint16_t id);
 int32_t hf_kill(uint16_t id);
 int32_t hf_delay(uint16_t id, uint32_t delay);
+int add_task_time(int id);
+int get_task_time(int id_aux);
