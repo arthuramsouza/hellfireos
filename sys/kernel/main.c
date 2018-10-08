@@ -124,6 +124,12 @@ static void idletask(void)
  */
 int main(void)
 {
+	int i;
+	for(i=0; i<MAX_TASKS; i++)
+	{
+		task_time_array[MAX_TASKS].id = -1;
+	}
+
 	static uint32_t oops=0xbaadd00d;
 	
 	_hardware_init();
