@@ -85,4 +85,10 @@ void app_main(void){
 	hf_spawn(task3, 70, 30, 70, "task d", 1024);
 	hf_spawn(task4, 0, 50, 0, "task e", 1024);
 	hf_spawn(task5, 0, 0, 0, "task f", 1024);
+
+	delay_ms(10000);
+	kprintf("\n\n\n\n\nTESTANDO IMPRESSAO");
+	print_jitter();
+
+	return;
 }
