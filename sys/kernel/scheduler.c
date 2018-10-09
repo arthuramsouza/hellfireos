@@ -25,8 +25,6 @@
 
 void add_to_delay_queue(delay_node** node_aux)
 {
-	kprintf("\nVOU ADICIONAR DELAY NA LISTA!\n");
-
 	//adiciona o nodo na primeira posição se a fila está vazia
 	if(size_delay_queue_MASTER == 0)
 	{
@@ -53,17 +51,15 @@ void add_to_delay_queue(delay_node** node_aux)
 
 void print_jitter()
 {
-	kprintf("\nVOU COLOCAR JITTER!");
-	kprintf("\nsize_delay_queue=%d", size_delay_queue_MASTER);
-
 	delay_node* node_aux = delay_head;
 	uint32_t sum = 0;
-	uint32_t min = 0;
-	uint32_t max = 0;
+	uint32_t min = (*node_aux).delay_value;
+	uint32_t max = (*node_aux).delay_value;
 	uint32_t aux = 0;
+    node_aux = (*node_aux).next;
 
 	int i;
-	for(i=0; i<size_delay_queue_MASTER; i++)
+	for(i=1; i<size_delay_queue_MASTER; i++)
 	{
 		aux = (*node_aux).delay_value;
 		node_aux = (*node_aux).next;
@@ -77,14 +73,12 @@ void print_jitter()
 		{
 			max = aux;
 		}
-
-		kprintf("\n TAREFA.DELAY_TIME=%d \n", aux);
 	}
 
-	kprintf("\nAVERAGE DELAY=%f", sum/size_delay_queue_MASTER);
-	kprintf("\nMIN DELAY=%d", min);
-	kprintf("\nMAX DELAY=%d", max);
-	kprintf("\nJITTER=%d", max-min);
+    kprintf("QUANTIDADE DE DELAYS=%d\n", size_delay_queue_MASTER);
+	kprintf("DELAY MINIMO=%d\n", min);
+	kprintf("DELAY MAXIMO=%d\n", max);
+	kprintf("JITTER=%d\n", max-min);
 }
 
 static void process_delay_queue(void)
