@@ -23,6 +23,68 @@
 #include <task.h>
 #include <scheduler.h>
 
+void add_to_delay_queue(delay_node** node_aux)
+{
+	//adiciona o nodo na primeira posição se a fila está vazia
+	if(size_delay_queue_MASTER == 0)
+	{
+		delay_head = *node_aux;
+
+		delay_tail = delay_head;
+
+		size_delay_queue_MASTER++;
+
+		return;			
+	}
+	//adiciona o nodo na última posição se a fila não está vazia
+	else
+	{
+		delay_tail->next = *node_aux;
+
+		delay_tail = delay_tail->next;
+
+		size_delay_queue_MASTER++;
+
+		return;
+	}	
+}
+
+void print_jitter()
+{
+	kprintf("\nVOU COLOCAR JITTER!");
+	kprintf("\nsize_delay_queue=%d", size_delay_queue_MASTER);
+
+	delay_node* node_aux = delay_head;
+	uint32_t sum = 0;
+	uint32_t min = 0;
+	uint32_t max = 0;
+	uint32_t aux = 0;
+
+	int i;
+	for(i=0; i<size_delay_queue_MASTER; i++)
+	{
+		aux = (*node_aux).delay_value;
+		node_aux = (*node_aux).next;
+		sum += aux;
+
+		if(aux < min)
+		{
+			min = aux;
+		}
+		if(aux > max)
+		{
+			max = aux;
+		}
+
+		kprintf("\n TAREFA.DELAY_TIME=%d \n", aux);
+	}
+
+	kprintf("\nAVERAGE DELAY=%f", sum/size_delay_queue_MASTER);
+	kprintf("\nMIN DELAY=%d", min);
+	kprintf("\nMAX DELAY=%d", max);
+	kprintf("\nJITTER=%d", max-min);
+}
+
 static void process_delay_queue(void)
 {
 	int32_t i, k;
@@ -321,7 +383,12 @@ int32_t sched_aperiodic(void)
 			aux_id = get_task_time(krnl_task->id);
 			task_time_array[aux_id].release_time = _readcounter();
 			task_time_array[aux_id].delay_time = task_time_array[aux_id].release_time - task_time_array[aux_id].arrival_time;
-			kprintf("\n\n\n TAREFA.ID=%d ---- TAREFA.ARRIVAL_TIME=%d ---- TAREFA.RELEASE_TIME=%d ---- TAREFA.DELAY_TIME=%d \n\n\n", task_time_array[aux_id].id, task_time_array[aux_id].arrival_time, task_time_array[aux_id].release_time, task_time_array[aux_id].delay_time);
+
+			delay_node* node_aux =  (delay_node*) malloc(sizeof(delay_node));
+			node_aux->delay_value = task_time_array[aux_id].delay_time;
+			add_to_delay_queue(&node_aux);
+
+			//kprintf("\n\n\n TAREFA.ID=%d ---- TAREFA.ARRIVAL_TIME=%d ---- TAREFA.RELEASE_TIME=%d ---- TAREFA.DELAY_TIME=%d \n\n\n", task_time_array[aux_id].id, task_time_array[aux_id].arrival_time, task_time_array[aux_id].release_time, task_time_array[aux_id].delay_time);
 
 			return krnl_task->id;
 		} else {
