@@ -25,6 +25,8 @@
 
 void add_to_delay_queue(delay_node** node_aux)
 {
+	kprintf("\nVOU ADICIONAR DELAY NA LISTA!\n");
+
 	//adiciona o nodo na primeira posição se a fila está vazia
 	if(size_delay_queue_MASTER == 0)
 	{
