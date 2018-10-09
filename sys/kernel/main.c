@@ -155,7 +155,7 @@ int main(void)
 		panic(PANIC_ABORTED);
 	}else{
 		panic(PANIC_GPF);
-	}
+	}	
 	
 	return 0;
 }
