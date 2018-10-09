@@ -42,23 +42,6 @@ int add_task_time(int id)
 	}	
 }
 
-/*
-task_time get_task_time(int id_aux)
-{
-	int i;
-	for(i=0; i<task_time_array_count; i++)
-	{
-		if(task_time_array[i].id == id_aux)
-		{
-			return task_time_array[i];
-		}
-	}
-
-	task_time aux;
-	aux.id = -1;
-	return aux;
-}
-*/
 int get_task_time(int id_aux)
 {
 	int i;
@@ -75,6 +58,39 @@ int get_task_time(int id_aux)
 	//aux.id = -1;
 	return -1;
 }
+
+/*
+//int DELAY_ARRAY_SIZE=1000;
+int delay_iteration=0;
+int delay_array_count=0;
+int* delay_array = (int*) malloc((const int)DELAY_ARRAY_SIZE * sizeof(int));
+
+void add_delay(int value)
+{
+	if(delay_array_count < DELAY_ARRAY_SIZE)
+	{
+		delay_array[delay_array_count]=value;
+		delay_array_count++;
+	}
+	else
+	{
+		int delay_size_aux = DELAY_ARRAY_SIZE * delay_iteration;
+		delay_iteration++;
+		int* delay_array_aux = (int*) malloc(sizeof(int) * DELAY_ARRAY_SIZE * delay_iteration);		
+		//DELAY_ARRAY_SIZE = (delay_array_count * DELAY_ARRAY_SIZE) * 2;
+
+		int i;
+		for(i=0; i<delay_size_aux; i++)
+		{
+			delay_array_aux[i] = delay_array[i];
+		}
+		delay_array_aux[delay_array_count]=value;
+		delay_array_count++;
+		free(delay_array);
+		delay_array = delay_array_aux;
+	}
+}
+*/
 
 /**
  * @brief Get a task id by its name.
