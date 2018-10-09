@@ -1,4 +1,4 @@
-APP = app/TESTANDO
+APP = app/trabalho_1
 ARCH = mips/hf-risc
 
 SERIAL_BAUD=57600
@@ -42,4 +42,3 @@ image: hal libc kernel app
 
 clean:
 	rm -rf *.o *~ *.elf *.bin *.cnt *.lst *.sec *.txt *.map
-
