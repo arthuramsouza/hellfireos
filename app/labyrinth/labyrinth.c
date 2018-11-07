@@ -90,7 +90,7 @@ int solve(int *m, int lin, int col, int si, int sj, int ei, int ej)
 	return search(m, si, sj, ei, ej, lin, col);
 }
 
-int app_main(void)
+void thread(void)
 {
 	struct maze_s *m;
 	int i, s, k = 0;
@@ -106,6 +106,15 @@ int app_main(void)
 		};
 	};
 	printf("\nsummary: %d of %d solved\n", k, i);
-	
+
+	while (1);
+}
+
+
+void app_main(void)
+{
+	hf_spawn(thread, 10, 9, 10, "thread", 4096);
+
+
 	return 0;
 }
