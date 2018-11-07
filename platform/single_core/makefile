@@ -1,4 +1,4 @@
-APP = app/trabalho_1
+APP = app/labyrinth
 ARCH = mips/hf-risc
 
 SERIAL_BAUD=57600
