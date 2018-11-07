@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include <hellfire.h>
 #include "labyrinth.h"
 
 void show(int *m, int lin, int col)
@@ -90,7 +90,7 @@ int solve(int *m, int lin, int col, int si, int sj, int ei, int ej)
 	return search(m, si, sj, ei, ej, lin, col);
 }
 
-int main(void)
+int app_main(void)
 {
 	struct maze_s *m;
 	int i, s, k = 0;
