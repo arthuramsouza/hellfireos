@@ -1,4 +1,4 @@
-APP = app/noc_test2
+APP = app/noc_test
 ARCH = mips/plasma
 
 CPU_ARCH = \"$(ARCH)\"
@@ -43,4 +43,3 @@ images:
 
 clean:
 	rm -rf *.o *~ *.elf *.bin *.cnt *.lst *.sec *.txt
-
